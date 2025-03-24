@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Showdata() {
 
@@ -31,7 +32,9 @@ function Showdata() {
             <td>{v.name}</td>
             <td>{v.email}</td>
             <td>{v.password}</td>
-            <td><button onClick={(e)=>handleDelete(i)}>Del</button></td>
+            <td><button onClick={(e)=>handleDelete(i)}>Del</button>
+            <Link to={"/Updatedata/" + i}>Edit</Link>
+            </td>
           </tr>
         )
        })}
