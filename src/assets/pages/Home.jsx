@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {ToastContainer,toast} from 'react-toastify'
 
 function Home() {
     const [emp,setEmp] = useState({});
@@ -16,6 +17,7 @@ function Home() {
         setAllemp(record);
         localStorage.setItem("emp",JSON.stringify(record));
         setEmp({});
+        toast.success("Record Inserted Successfuly!!!")
     }
   return (
     <div>
@@ -42,6 +44,7 @@ function Home() {
             </tr>
         </table>
       </form>
+      <ToastContainer/>
     </div>
   )
 }
