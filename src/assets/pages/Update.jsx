@@ -3,29 +3,59 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function Update() {
   let data = useParams();
-  const [emp, setEmp] = useState({});
+  const [Employee, setEmp] = useState({});
   let navigate = useNavigate();
+  const [hobby, setHobby] = useState([]);
+  const [city, setCity] = useState([
+      "Surat",
+      "Navsari",
+      "Ahmedabad",
+      "Bharuch",
+      "Anand",
+      "Mumbai",
+      "Pune",
+    ]);
+  
 
   let getinput = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    setEmp({ ...emp, [name]: value });
+    let ho = [...hobby];
+
+    if (name === "hobby") {
+      console.log(e.target.checked);
+      if (e.target.checked) {
+        ho.push(e.target.value);
+      } else {
+        ho = ho.filter((v, i) => v !== e.target.value);
+        console.log(ho);
+      }
+    }
+    setHobby(ho);
+    console.log(ho);
+    if (name == "hobby") {
+      setEmp({ ...Employee, ["hobby"]: ho });
+    } else {
+      setEmp({ ...Employee, [name]: value });
+      // setEmp({ ...emp, [name]: value });
+    }
   };
 
   useEffect(() => {
     console.log(data);
     let empdata = JSON.parse(localStorage.getItem("emp"));
     setEmp(empdata[data.index]);
+    setHobby(empdata[data.index]["hobby"]);
   }, [setEmp]);
 
   let submitdata = (e) => {
     e.preventDefault();
-    console.log(emp);
+    console.log(Employee);
     let empdata = JSON.parse(localStorage.getItem("emp"));
-    empdata[data.index] = emp;
+    empdata[data.index] = Employee;
     console.log(empdata);
-    localStorage.setItem("emp",JSON.stringify(empdata))
-    navigate("/showData")
+    localStorage.setItem("emp", JSON.stringify(empdata));
+    navigate("/showData");
   };
 
   return (
@@ -42,7 +72,7 @@ function Update() {
                 placeholder="Enter Your Name"
                 name="name"
                 required
-                value={emp.name ? emp.name : ""}
+                value={Employee.name ? Employee.name : ""}
                 onChange={(e) => getinput(e)}
               />
             </td>
@@ -55,7 +85,7 @@ function Update() {
                 placeholder="Enter Your Email"
                 name="email"
                 required
-                value={emp.email ? emp.email : ""}
+                value={Employee.email ? Employee.email : ""}
                 onChange={(e) => getinput(e)}
               />
             </td>
@@ -68,9 +98,74 @@ function Update() {
                 placeholder="Enter Your Email"
                 name="password"
                 required
-                value={emp.password ? emp.password : ""}
+                value={Employee.password ? Employee.password : ""}
                 onChange={(e) => getinput(e)}
               />
+            </td>
+          </tr>
+          <tr>
+            <td>Enter Your Gender :</td>
+            <td>
+              <input
+                type="radio"
+                name="gender"
+                value="male"
+                onChange={(e) => getinput(e)}
+                checked={Employee.gender == "male" ? "checked" : ""}
+              />
+              Male
+              <input
+                type="radio"
+                name="gender"
+                value="female"
+                onChange={(e) => getinput(e)}
+                checked={Employee.gender == "female" ? "checked" : ""}
+              />
+              Female
+            </td>
+          </tr>
+          {/* hobby edit */}
+          <tr>
+            <td>Hobby :</td>
+            <td>
+              <input
+                type="checkbox"
+                name="hobby"
+                onChange={(e) => getinput(e)}
+                value="music"
+                checked={hobby.includes("music") ? "checked" : ""}
+              />
+              Music
+              <input
+                type="checkbox"
+                name="hobby"
+                onChange={(e) => getinput(e)}
+                value="travel"
+                checked={hobby.includes("travel") ? "checked" : ""}
+              />
+              Travel
+              <input
+                type="checkbox"
+                name="hobby"
+                onChange={(e) => getinput(e)}
+                value="coding"
+                checked={hobby.includes("coding") ? "checked" : ""}
+              />
+              Coding
+            </td>
+          </tr>
+          {/* city update */}
+          <tr>
+            <td>Enter Your City</td>
+            <td>
+              <select name="city" onChange={(e) => getinput(e)}>
+                <option value="">---Select City---</option>
+                {city.map((v, i) => {
+                  return <option value={v}
+                  selected={Employee.city===v ? "selected" : ""}
+                  >{v}</option>;
+                })}
+              </select>
             </td>
           </tr>
           <tr>
