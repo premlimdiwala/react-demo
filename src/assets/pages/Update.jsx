@@ -7,15 +7,14 @@ function Update() {
   let navigate = useNavigate();
   const [hobby, setHobby] = useState([]);
   const [city, setCity] = useState([
-      "Surat",
-      "Navsari",
-      "Ahmedabad",
-      "Bharuch",
-      "Anand",
-      "Mumbai",
-      "Pune",
-    ]);
-  
+    "Surat",
+    "Navsari",
+    "Ahmedabad",
+    "Bharuch",
+    "Anand",
+    "Mumbai",
+    "Pune",
+  ]);
 
   let getinput = (e) => {
     let name = e.target.name;
@@ -23,26 +22,17 @@ function Update() {
     let ho = [...hobby];
 
     if (name === "hobby") {
-      console.log(e.target.checked);
       if (e.target.checked) {
         ho.push(e.target.value);
       } else {
-        ho = ho.filter((v, i) => v !== e.target.value);
-        console.log(ho);
+        ho = ho.filter((v) => v !== e.target.value);
       }
     }
     setHobby(ho);
-    console.log(ho);
-    if (name == "hobby") {
-      setEmp({ ...Employee, ["hobby"]: ho });
-    } else {
-      setEmp({ ...Employee, [name]: value });
-      // setEmp({ ...emp, [name]: value });
-    }
+    setEmp({ ...Employee, [name]: value });
   };
 
   useEffect(() => {
-    console.log(data);
     let empdata = JSON.parse(localStorage.getItem("emp"));
     setEmp(empdata[data.index]);
     setHobby(empdata[data.index]["hobby"]);
@@ -50,132 +40,210 @@ function Update() {
 
   let submitdata = (e) => {
     e.preventDefault();
-    console.log(Employee);
     let empdata = JSON.parse(localStorage.getItem("emp"));
     empdata[data.index] = Employee;
-    console.log(empdata);
     localStorage.setItem("emp", JSON.stringify(empdata));
     navigate("/showData");
   };
 
   return (
-    <div>
-      <h1 style={{ textAlign: "center" }}>Update Form</h1>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        backgroundColor: "#f5f5f5",
+        padding: "20px",
+      }}
+    >
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "15px",
+          boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
+          padding: "30px",
+          maxWidth: "400px",
+          width: "100%",
+          transition: "transform 0.3s",
+        }}
+        onMouseOver={(e) => (e.currentTarget.style.transform = "translateY(-5px)")}
+        onMouseOut={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+      >
+        <h2 style={{ textAlign: "center", color: "#333", marginBottom: "20px" }}>
+          📝 Update Employee Info
+        </h2>
 
-      <form action="" method="post" onSubmit={(e) => submitdata(e)}>
-        <table align="center" border={1}>
-          <tr>
-            <td>Enter Name : </td>
-            <td>
-              <input
-                type="text"
-                placeholder="Enter Your Name"
-                name="name"
-                required
-                value={Employee.name ? Employee.name : ""}
-                onChange={(e) => getinput(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Enter Email : </td>
-            <td>
-              <input
-                type="email"
-                placeholder="Enter Your Email"
-                name="email"
-                required
-                value={Employee.email ? Employee.email : ""}
-                onChange={(e) => getinput(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Enter Password : </td>
-            <td>
-              <input
-                type="password"
-                placeholder="Enter Your Email"
-                name="password"
-                required
-                value={Employee.password ? Employee.password : ""}
-                onChange={(e) => getinput(e)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Enter Your Gender :</td>
-            <td>
-              <input
-                type="radio"
-                name="gender"
-                value="male"
-                onChange={(e) => getinput(e)}
-                checked={Employee.gender == "male" ? "checked" : ""}
-              />
-              Male
-              <input
-                type="radio"
-                name="gender"
-                value="female"
-                onChange={(e) => getinput(e)}
-                checked={Employee.gender == "female" ? "checked" : ""}
-              />
-              Female
-            </td>
-          </tr>
-          {/* hobby edit */}
-          <tr>
-            <td>Hobby :</td>
-            <td>
-              <input
-                type="checkbox"
-                name="hobby"
-                onChange={(e) => getinput(e)}
-                value="music"
-                checked={hobby.includes("music") ? "checked" : ""}
-              />
-              Music
-              <input
-                type="checkbox"
-                name="hobby"
-                onChange={(e) => getinput(e)}
-                value="travel"
-                checked={hobby.includes("travel") ? "checked" : ""}
-              />
-              Travel
-              <input
-                type="checkbox"
-                name="hobby"
-                onChange={(e) => getinput(e)}
-                value="coding"
-                checked={hobby.includes("coding") ? "checked" : ""}
-              />
-              Coding
-            </td>
-          </tr>
-          {/* city update */}
-          <tr>
-            <td>Enter Your City</td>
-            <td>
-              <select name="city" onChange={(e) => getinput(e)}>
-                <option value="">---Select City---</option>
-                {city.map((v, i) => {
-                  return <option value={v}
-                  selected={Employee.city===v ? "selected" : ""}
-                  >{v}</option>;
-                })}
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <button type="submit">Edit</button>
-            </td>
-          </tr>
-        </table>
-      </form>
+        <form onSubmit={submitdata}>
+          <div style={{ marginBottom: "20px" }}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={Employee.name || ""}
+              onChange={getinput}
+              required
+              style={{
+                width: "100%",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #ccc",
+                outline: "none",
+                transition: "all 0.3s ease",
+                backgroundColor: "#fafafa",
+                fontSize: "14px",
+                boxSizing: "border-box",
+              }}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 8px #66a6ff")}
+              onBlur={(e) => (e.target.style.boxShadow = "none")}
+            />
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={Employee.email || ""}
+              onChange={getinput}
+              required
+              style={{
+                width: "100%",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #ccc",
+                outline: "none",
+                transition: "all 0.3s ease",
+                backgroundColor: "#fafafa",
+                fontSize: "14px",
+                boxSizing: "border-box",
+              }}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 8px #66a6ff")}
+              onBlur={(e) => (e.target.style.boxShadow = "none")}
+            />
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={Employee.password || ""}
+              onChange={getinput}
+              required
+              style={{
+                width: "100%",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #ccc",
+                outline: "none",
+                transition: "all 0.3s ease",
+                backgroundColor: "#fafafa",
+                fontSize: "14px",
+                boxSizing: "border-box",
+              }}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 8px #66a6ff")}
+              onBlur={(e) => (e.target.style.boxShadow = "none")}
+            />
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ fontWeight: "bold", display: "block", marginBottom: "5px" }}>
+              Gender:
+            </label>
+            <div style={{ display: "flex", gap: "20px" }}>
+              <label>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  onChange={getinput}
+                  checked={Employee.gender === "male"}
+                />
+                Male
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  onChange={getinput}
+                  checked={Employee.gender === "female"}
+                />
+                Female
+              </label>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ fontWeight: "bold", display: "block", marginBottom: "5px" }}>
+              Hobbies:
+            </label>
+            <div style={{ display: "flex", gap: "15px", flexWrap: "wrap" }}>
+              {["music", "travel", "coding"].map((h) => (
+                <label key={h} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <input
+                    type="checkbox"
+                    name="hobby"
+                    value={h}
+                    onChange={getinput}
+                    checked={hobby.includes(h)}
+                  />
+                  {h.charAt(0).toUpperCase() + h.slice(1)}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ fontWeight: "bold", display: "block", marginBottom: "5px" }}>
+              City:
+            </label>
+            <select
+              name="city"
+              onChange={getinput}
+              style={{
+                width: "100%",
+                padding: "15px",
+                borderRadius: "10px",
+                border: "1px solid #ccc",
+                backgroundColor: "#fafafa",
+                outline: "none",
+                transition: "all 0.3s ease",
+              }}
+              onFocus={(e) => (e.target.style.boxShadow = "0 0 8px #66a6ff")}
+              onBlur={(e) => (e.target.style.boxShadow = "none")}
+            >
+              <option value="">Select City</option>
+              {city.map((v, i) => (
+                <option key={i} value={v} selected={Employee.city === v}>
+                  {v}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            style={{
+              background: "#66a6ff",
+              color: "#fff",
+              padding: "15px",
+              borderRadius: "10px",
+              border: "none",
+              cursor: "pointer",
+              width: "100%",
+              fontWeight: "bold",
+              transition: "0.3s",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.background = "#89f7fe")}
+            onMouseOut={(e) => (e.currentTarget.style.background = "#66a6ff")}
+          >
+            Update Information
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
